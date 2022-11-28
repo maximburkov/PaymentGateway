@@ -1,5 +1,7 @@
 services:
   payment-gateway:
+    environment:
+      - BANK_API_URL=http://bank-api-mock:80
     build: PaymentGateway
     depends_on: 
       - bank-api-mock

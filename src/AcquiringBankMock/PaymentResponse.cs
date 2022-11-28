@@ -1,3 +1,4 @@
 namespace AcquiringBankMock;
 
-public record PaymentResponse(string Status);
+// TODO: not bool
+public record PaymentResponse(bool Status, string? Message);

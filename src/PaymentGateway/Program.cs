@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Http.HttpResults;
 using PaymentGateway;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,8 +7,11 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-app.MapGet("/payment", () =>
+app.MapGet("/payment", async () =>
 {
+    var env = Environment.GetEnvironmentVariable("BANK_API_URL");
+    using HttpClient client = new HttpClient();
+    var res = await client.GetAsync($"{env}/payment");
     return "ohh of payments";
 });
 app.MapPost("/payment", (PaymentRequest payment) => Results.Ok(42));

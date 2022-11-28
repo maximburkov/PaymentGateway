@@ -13,16 +13,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentGateway.UnitTests", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcquiringBankMock", "src\AcquiringBankMock\AcquiringBankMock.csproj", "{266B29E7-93D4-4487-869F-79204E1B118B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentGateway.Core", "src\PaymentGateway.Core\PaymentGateway.Core.csproj", "{964B2A61-2DC0-4DE6-A491-27E3E5A2E9EA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentGateway.Infrastructure", "src\PaymentGateway.Infrastructure\PaymentGateway.Infrastructure.csproj", "{971CA12E-0492-43B6-90B7-DB27A8B317CC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6949DB7B-E64E-4F86-88B8-09DEBABD97A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6949DB7B-E64E-4F86-88B8-09DEBABD97A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6949DB7B-E64E-4F86-88B8-09DEBABD97A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6949DB7B-E64E-4F86-88B8-09DEBABD97A8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6D90F64D-E298-425F-B2C5-F6313D4F13FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6D90F64D-E298-425F-B2C5-F6313D4F13FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D90F64D-E298-425F-B2C5-F6313D4F13FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -35,11 +35,20 @@ Global
 		{266B29E7-93D4-4487-869F-79204E1B118B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{266B29E7-93D4-4487-869F-79204E1B118B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{266B29E7-93D4-4487-869F-79204E1B118B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{964B2A61-2DC0-4DE6-A491-27E3E5A2E9EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{964B2A61-2DC0-4DE6-A491-27E3E5A2E9EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{964B2A61-2DC0-4DE6-A491-27E3E5A2E9EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{964B2A61-2DC0-4DE6-A491-27E3E5A2E9EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{971CA12E-0492-43B6-90B7-DB27A8B317CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{971CA12E-0492-43B6-90B7-DB27A8B317CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{971CA12E-0492-43B6-90B7-DB27A8B317CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{971CA12E-0492-43B6-90B7-DB27A8B317CC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{6949DB7B-E64E-4F86-88B8-09DEBABD97A8} = {70C6CC69-A5F3-4D1A-AA2C-8447A10EE6F6}
 		{6D90F64D-E298-425F-B2C5-F6313D4F13FF} = {70C6CC69-A5F3-4D1A-AA2C-8447A10EE6F6}
 		{675B9070-8A3E-4E41-9E22-EDB76F182BB9} = {0A64A41C-5DC2-4DF0-8491-7F99B2204E7C}
 		{266B29E7-93D4-4487-869F-79204E1B118B} = {70C6CC69-A5F3-4D1A-AA2C-8447A10EE6F6}
+		{964B2A61-2DC0-4DE6-A491-27E3E5A2E9EA} = {70C6CC69-A5F3-4D1A-AA2C-8447A10EE6F6}
+		{971CA12E-0492-43B6-90B7-DB27A8B317CC} = {70C6CC69-A5F3-4D1A-AA2C-8447A10EE6F6}
 	EndGlobalSection
 EndGlobal
