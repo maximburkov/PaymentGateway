@@ -1,0 +1,12 @@
+services:
+  payment-gateway:
+    build: PaymentGateway
+    depends_on: 
+      - bank-api-mock
+    ports:
+      - 1111:80
+  
+  bank-api-mock:
+    build: AcquiringBankMock
+    ports:
+      - 2222:80
