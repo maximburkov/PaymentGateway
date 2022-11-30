@@ -12,3 +12,9 @@ services:
     build: AcquiringBankMock
     ports:
       - 2222:80
+        
+  database:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: password
+      

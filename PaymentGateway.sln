@@ -9,7 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{0A64A41C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentGateway", "src\PaymentGateway\PaymentGateway.csproj", "{6D90F64D-E298-425F-B2C5-F6313D4F13FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentGateway.UnitTests", "tests\PaymentGateway.UnitTests\PaymentGateway.UnitTests.csproj", "{675B9070-8A3E-4E41-9E22-EDB76F182BB9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentGateway.Core.UnitTests", "tests\PaymentGateway.Core.UnitTests\PaymentGateway.Core.UnitTests.csproj", "{675B9070-8A3E-4E41-9E22-EDB76F182BB9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcquiringBankMock", "src\AcquiringBankMock\AcquiringBankMock.csproj", "{266B29E7-93D4-4487-869F-79204E1B118B}"
 EndProject
