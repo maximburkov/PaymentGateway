@@ -5,14 +5,17 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY ["PaymentGateway.csproj", "PaymentGateway.csproj"]
-RUN dotnet restore "PaymentGateway.csproj"
+COPY ["PaymentGateway/PaymentGateway.csproj", "PaymentGateway/PaymentGateway.csproj"]
+COPY ["PaymentGateway.Core/PaymentGateway.Core.csproj", "PaymentGateway.Core/PaymentGateway.Core.csproj"]
+COPY ["PaymentGateway.Infrastructure/PaymentGateway.Infrastructure.csproj", "PaymentGateway.Infrastructure/PaymentGateway.Infrastructure.csproj"]
+
+RUN dotnet restore "PaymentGateway/PaymentGateway.csproj"
 COPY . .
 WORKDIR "/src"
-RUN dotnet build "PaymentGateway.csproj" -c Release -o /app/build
+RUN dotnet build "PaymentGateway/PaymentGateway.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "PaymentGateway.csproj" -c Release -o /app/publish
+RUN dotnet publish "PaymentGateway/PaymentGateway.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app

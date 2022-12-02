@@ -2,16 +2,13 @@ using System.Reflection;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using PaymentGateway;
 using PaymentGateway.Core;
-using PaymentGateway.Dto;
 using PaymentGateway.Endpoints;
 using PaymentGateway.Infrastructure.Integration;
 using PaymentGateway.Infrastructure.Persistence;
-using Swashbuckle.AspNetCore.SwaggerGen;
 using IPublisher = PaymentGateway.IPublisher;
 
 var builder = WebApplication.CreateBuilder(args);

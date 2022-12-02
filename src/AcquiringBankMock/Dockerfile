@@ -6,6 +6,7 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 COPY ["AcquiringBankMock.csproj", "AcquiringBankMock.csproj"]
+
 RUN dotnet restore "AcquiringBankMock.csproj"
 COPY . .
 WORKDIR "/src"
