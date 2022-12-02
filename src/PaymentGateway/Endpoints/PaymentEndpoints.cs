@@ -10,7 +10,7 @@ public static class PaymentEndpoints
 {
     public static void UsePaymentEndpoints(this IEndpointRouteBuilder app)
     {
-        app.MapGet("/payment", async ([FromServices] ApplicationDbContext context) =>
+        app.MapGet("/payments", async ([FromServices] ApplicationDbContext context) =>
             {
                 var payments = await context.Payments
                     .AsNoTracking()
@@ -20,7 +20,7 @@ public static class PaymentEndpoints
             })
             .Produces<List<PaymentDetailsResponse>>();
 
-        app.MapGet("/payment/{id}", async (Guid id, ApplicationDbContext context) =>
+        app.MapGet("/payments/{id}", async (Guid id, ApplicationDbContext context) =>
             {
                 var payment = await context.Payments.FirstOrDefaultAsync(payment => payment.Id == id);
                 return payment is null
@@ -29,8 +29,8 @@ public static class PaymentEndpoints
             })
             .Produces<PaymentDetailsResponse>()
             .Produces(StatusCodes.Status404NotFound);
-        
-        app.MapPost("/payment", async (PaymentRequest paymentRequest,
+
+        app.MapPost("/payments", async (PaymentRequest paymentRequest,
                 [FromServices] ApplicationDbContext context,
                 [FromServices] IPublisher publisher,
                 IValidator<PaymentRequest> validator) =>
@@ -43,7 +43,7 @@ public static class PaymentEndpoints
 
                 if (await context.Payments.AnyAsync(payment => payment.IdempotencyKey == paymentRequest.IdempotencyKey))
                 {
-                    return Results.Conflict("Duplicated payment.");
+                    return Results.Conflict("Duplicated Idempotency key.");
                 }
 
                 var payment = paymentRequest.AsPayment();
@@ -52,7 +52,7 @@ public static class PaymentEndpoints
 
                 await publisher.Send(payment);
 
-                return Results.Accepted($"/payment/{payment.Id}", payment);
+                return Results.Accepted($"/payments/{payment.Id}", PaymentDetailsResponse.FromPayment(payment));
             })
             .Produces(StatusCodes.Status202Accepted)
             .Produces(StatusCodes.Status400BadRequest)

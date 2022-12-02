@@ -12,6 +12,8 @@ public class Payment : INotification
 {
     public Guid Id { get; set; }
     
+    public Guid MerchantId { get; set; }
+    
     public Guid IdempotencyKey { get; set; }
     
     public string CardNumber { get; set; } 
@@ -27,14 +29,17 @@ public class Payment : INotification
     public int ExpYear { get; set; }
     
     public int ExpMonth { get; set; }
+    
+    public string? RejectionReason { get; set; }
 
     public Status Status { get; set; } = Status.Pending;
 
-    public static Payment Initiate(Guid idempotencyKey, string cardNumber, string name, string currency, decimal amount, int year, int month, string cvv)
+    public static Payment Initiate(Guid idempotencyKey, Guid merchantId, string cardNumber, string name, string currency, decimal amount, int year, int month, string cvv)
     {
         return new Payment
         {
             Id = Guid.NewGuid(),
+            MerchantId = merchantId,
             IdempotencyKey = idempotencyKey,
             CardNumber = cardNumber,
             Name = name,

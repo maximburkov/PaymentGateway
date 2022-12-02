@@ -10,8 +10,6 @@ services:
   
   bank-api-mock:
     build: AcquiringBankMock
-    ports:
-      - 2222:80
         
   database:
     image: postgres

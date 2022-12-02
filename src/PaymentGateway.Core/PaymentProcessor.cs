@@ -12,7 +12,9 @@ public class PaymentProcessor :  IPaymentProcessor
     public async Task<bool> Process(Payment payment)
     {
         var result = await _bankService.MakePayment(payment);
-        payment.Status = result.isSuccesseful ? Status.Succeeded : Status.Failed;
-        return result.isSuccesseful;
+        payment.Status = result.IsSuccesseful ? Status.Succeeded : Status.Failed;
+        if (!result.IsSuccesseful)
+            payment.RejectionReason = result.Error;
+        return result.IsSuccesseful;
     }
 }

@@ -1,3 +1,3 @@
 namespace PaymentGateway.Infrastructure.Integration;
 
-public record AcquiringBankResponse(bool Status, string? RejectionReason = null);
+public record AcquiringBankResponse(bool Status, string? Error = null);

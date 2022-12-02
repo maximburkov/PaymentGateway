@@ -12,11 +12,6 @@ public class ApplicationDbContext : DbContext
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Payment>()
-            .Ignore(p => p.Cvv)
-            .Ignore(p => p.ExpMonth)
-            .Ignore(p => p.ExpYear);
-
         base.OnModelCreating(modelBuilder);
     }
 

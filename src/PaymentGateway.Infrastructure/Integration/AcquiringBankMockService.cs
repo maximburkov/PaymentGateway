@@ -1,5 +1,6 @@
 using System.Net.Http.Json;
 using System.Text.Json;
+using Microsoft.Extensions.Logging;
 using PaymentGateway.Core;
 
 namespace PaymentGateway.Infrastructure.Integration;
@@ -7,13 +8,15 @@ namespace PaymentGateway.Infrastructure.Integration;
 public class AcquiringBankMockService : IAcquiringBankService
 {
     private readonly HttpClient _httpClient;
+    private readonly ILogger<AcquiringBankMockService> _logger;
     
-    public AcquiringBankMockService(HttpClient httpClient)
+    public AcquiringBankMockService(HttpClient httpClient, ILogger<AcquiringBankMockService> logger)
     {
         _httpClient = httpClient;
+        _logger = logger;
     }
     
-    public async Task<(bool isSuccesseful, string? error)> MakePayment(Payment payment)
+    public async Task<(bool IsSuccesseful, string? Error)> MakePayment(Payment payment)
     {
         try
         {
@@ -25,11 +28,11 @@ public class AcquiringBankMockService : IAcquiringBankService
                     PropertyNameCaseInsensitive = true
                 });
 
-            return result is { Status: true } ? (true, null) : (false, result!.RejectionReason);
+            return result is { Status: true } ? (true, null) : (false, result!.Error);
         }
         catch (HttpRequestException ex)
         {
-            // TODO: log
+            _logger.LogError("Acquiring bank network error.");
             return (false, "Acquiring bank unavailable");
         }
     }

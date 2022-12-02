@@ -23,17 +23,20 @@ public record CardDetails
 public record PaymentRequest
 {
     public Guid IdempotencyKey { get; init; }
-     public CardDetails CardDetails { get; init; }
-     
-     /// <example>10</example>
-     public decimal Amount { get; init; }
-     
-     /// <example>GBP</example>
-     public string Currency { get; init; }
-     
-     public Payment AsPayment()
-     {
-         return Payment.Initiate(IdempotencyKey, CardDetails.Number, CardDetails.Name, Currency, Amount,
-             CardDetails.ExpYear, CardDetails.ExpMonth, CardDetails.Cvv);
-     }
+
+    public Guid MerchantId { get; set; }
+    
+    public CardDetails CardDetails { get; init; }
+
+    /// <example>10</example>
+    public decimal Amount { get; init; }
+
+    /// <example>GBP</example>
+    public string Currency { get; init; }
+
+    public Payment AsPayment()
+    {
+        return Payment.Initiate(IdempotencyKey, MerchantId, CardDetails.Number, CardDetails.Name, Currency, Amount,
+            CardDetails.ExpYear, CardDetails.ExpMonth, CardDetails.Cvv);
+    }
 }
