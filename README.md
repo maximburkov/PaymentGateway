@@ -2,12 +2,12 @@
 
 ## How to run
 
-To avoid issues with setting up environemt I implemented solution with docker compose (You need docker to run solution). To run Payment Gateway using your terminal (on any OS with docker):
+To avoid issues with setting up the environemt I implemented a solution with docker-compose (You need docker to run the solution). To run Payment Gateway using your terminal (on any OS with docker):
 - Open terminal
-- Change current directory to PaymentGateway/src - `cd FOLDER_WITH_SOLUTION/PaymentGateway/src`
-- Run `docker-compose up` command (it could take couple minutes to download and build images and start container). 
+- Change the current directory to PaymentGateway/src - `cd FOLDER_WITH_SOLUTION/PaymentGateway/src`
+- Run `docker-compose up` command (it could take couple of minutes to download and build images and start the container). 
 
-This will build and spin up 3 containers: Payment gateway Api, Acquiring bank Api and database.
+This will build and spin up 3 containers: Payment gateway API, Acquiring bank API, and database.
 
 Docker Desktop example:
 
@@ -18,26 +18,26 @@ Docker Desktop example:
 ![ps](docs/docker-ps.png)
 
 - Open http://localhost:1111/swagger/index.html for using Swagger. 
-- To avoid any issues with certificates during solution testing I use http that's **only for testing purposes** (we should always use https).
+- To avoid any issues with certificates during solution testing I use HTTP that's **only for testing purposes** (we should always use HTTPS).
 
 ## Architecture
 
-Solution implemented using Clean Architecture (or [Hex. architecture](https://en.wikipedia.org/wiki/Hexagonal_architecture_(software))) approach. PaymentGateway.Core doesn't depend on Api and Infrastructure projects.
+The solution is implemented using the Clean Architecture (or [Hex. architecture](https://en.wikipedia.org/wiki/Hexagonal_architecture_(software))) approach. PaymentGateway.Core doesn't depend on Api and Infrastructure projects.
 
 Projects:
 
 src:
-- PaymentGateway - main api wich is communicate through http with Acquiring bank mock service and stores information about payments in PostgreS database. Implemented using Minimal Api. 
-- PaymentGateway.Core - this project will contain all code specific to the domain layer. Doesn't not depend on Api and Infrastructure project
-- PaymentGateway.Infrastructure - this project contains classes for accessing external resources such as web services and database, such as: service for communication with Bank Mock api and database context.
+- `PaymentGateway` - main API wich is communicating through HTTP with Acquiring bank mock service and stores information about payments in the PostgreS database. Implemented using Minimal API. 
+- `PaymentGateway.Core` - this project will contain all code specific to the domain layer. Doesn't depend on Api and Infrastructure project
+- `PaymentGateway.Infrastructure` - this project contains classes for accessing external resources such as web services and databases, such as service for communication with Bank Mock API and database context.
 
 test:
-- PaymentGateway.Core.UnitTests - project with Unit Tests. Using xUnit, FluentAssertions and NSubstitute.
-- PaymentGateway.Api.IntegrationTests - TBD.Currently skipped. Should spin up environment correctly.
+- `PaymentGateway.Core.UnitTests` - project with Unit Tests. Using xUnit, FluentAssertions and NSubstitute.
+- `PaymentGateway.Api.IntegrationTests` - TBD.Currently skipped. Should spin up the environment correctly.
 
 ## API description
 
-`Get /payments` - returns the list of all payments.
+`Get /payments` - returns all payments.
 
 Response example:
 ```json
@@ -67,7 +67,7 @@ Response example:
 ]
 ```
 
-`Post /payments` - create new payment. Payments are handled asynchronously. When new Payment is created, Gateway create immediately a Payment and return HTTP status 202 Accepted with location of created payment or error response.
+`Post /payments` - creates new payment in the system. Payments are handled asynchronously. When this endpoint is called, Gateway creates payment and return `HTTP status 202` with location of created payment or error response.
 
 Request example:
 ```json
@@ -100,7 +100,7 @@ Response example:
 }
 ```
 
-`Get /payments{id}` - retrieve payment by id.
+`Get /payments{id}` - retrieves payment by id.
 
 Response example:
 ```json
@@ -117,21 +117,21 @@ Response example:
 }
 ```
 ### Payment handling algorithm
-- Verify payment details
+- Verify payment details (validation)
 - Save payment with "Pending" status
-- Send payment to `IPublisher`. `IPublisher` it is an abstarction for message bus. Currently payments are consumed by in memory event bus implemented using MediatR. Event Bus runs Background processing of payment. In production code in-memory event bus shoul be replaced with Message Queue and Message quueue consumer.
-- `Payment Processor` is sending payment to Acquiring bank and handling response and update payment Status and Rejection reason depending on response from bank. 
+- Send payment to message pusblisher. `IPublisher` is event bus abtraction. Currently payments are consumed by in memory event bus implemented with MediatR. This Event Bus starts Payment processing in the background. In production code in-memory event bus shoul be replaced with Message Queue and Message queue consumer.
+- `Payment Processor` is sending payment to Acquiring bank and handles response and update payment Status and Rejection reason depending on a response from the bank.
 
 ## Testing Payment Gateway
 
-Aqcuiring Bank mock contains predefined accounts. Payment could be rejected by bank in the following cases:
+Acquiring Bank mock contains predefined bank accounts. Payment could be rejected by bank in the following cases:
 
-1. If account doesn't support specific currency
+1. If user's bank account doesn't support specific currency
 2. Invalid card details
 3. Card expired
 4. Not enough money for the operation
 
-Predefined accounts (in memory, not persisted):
+Predefined accounts (in memory, not persisted), that can be used to verify Payment Gateway:
 
 ```csharp
             new()
@@ -161,9 +161,8 @@ Predefined accounts (in memory, not persisted):
             }
 ```
 
-This users can be used to verify Payment Gateway. 
 
-There is predefined request for 10 GBP by Harry Potter.
+In Swagger I defined  request sample for payment. Harry Potter has only 100 GBP on his account, in this case if payment with 1000 GBP is requested bank will reject:
 
 ```json
 {
@@ -183,10 +182,10 @@ There is predefined request for 10 GBP by Harry Potter.
 
 ## Assumptions
 
-- Payment should be handled in asynchrounus fashion. However, in real world we can use combination of sync/async handling depending on some period of time. 
-- We should not handle duplicated payments. To achieve this requirement I decided to use `IdempotencyKey` that shoul be generated on the client side on each new payment request. Currently this key is unique across all payments but in production system it could be user specific. Idempotency key could be stored in cache and be evicted after some period of time.
-- For Unit testing and low-coupling I used Dependency Inversion principle.
-- For code readability I used libraries with fluent syntax such as Fluent Assertions for Unit tests and Fluent Validation for validation.
+- Payment should be handled in an asynchronous fashion. However, in the real world, we can use a combination of sync/async handling depending on some period. 
+- We should not handle duplicated payments. To achieve this requirement I decided to use `IdempotencyKey` that should be generated on the client side on each new payment request. Currently, this key is unique across all payments but in production system, it could be user-specific. idempotency key could be stored in cache and be evicted after a while.
+- For Unit testing and low-coupling I used the Dependency Inversion principle.
+- For code readability, I used libraries with fluent syntaxes such as Fluent Assertions for Unit tests and Fluent Validation for validation.
 
 ## Areas for improvement
 - Https 
