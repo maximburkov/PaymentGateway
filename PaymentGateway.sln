@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentGateway.Core", "src\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentGateway.Infrastructure", "src\PaymentGateway.Infrastructure\PaymentGateway.Infrastructure.csproj", "{971CA12E-0492-43B6-90B7-DB27A8B317CC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentGateway.Api.IntegrationTests", "tests\PaymentGateway.Api.IntegrationTests\PaymentGateway.Api.IntegrationTests.csproj", "{27AC692D-80B2-403C-B4C7-5C51CE0393CE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +45,10 @@ Global
 		{971CA12E-0492-43B6-90B7-DB27A8B317CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{971CA12E-0492-43B6-90B7-DB27A8B317CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{971CA12E-0492-43B6-90B7-DB27A8B317CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27AC692D-80B2-403C-B4C7-5C51CE0393CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27AC692D-80B2-403C-B4C7-5C51CE0393CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27AC692D-80B2-403C-B4C7-5C51CE0393CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27AC692D-80B2-403C-B4C7-5C51CE0393CE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{6D90F64D-E298-425F-B2C5-F6313D4F13FF} = {70C6CC69-A5F3-4D1A-AA2C-8447A10EE6F6}
@@ -50,5 +56,6 @@ Global
 		{266B29E7-93D4-4487-869F-79204E1B118B} = {70C6CC69-A5F3-4D1A-AA2C-8447A10EE6F6}
 		{964B2A61-2DC0-4DE6-A491-27E3E5A2E9EA} = {70C6CC69-A5F3-4D1A-AA2C-8447A10EE6F6}
 		{971CA12E-0492-43B6-90B7-DB27A8B317CC} = {70C6CC69-A5F3-4D1A-AA2C-8447A10EE6F6}
+		{27AC692D-80B2-403C-B4C7-5C51CE0393CE} = {0A64A41C-5DC2-4DF0-8491-7F99B2204E7C}
 	EndGlobalSection
 EndGlobal

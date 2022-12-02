@@ -6,16 +6,16 @@ public class Account
     
     public List<SpecificCurrencyAccount> SpecificCurrencyAccounts { get; set; }
     
-    public BankResult Withdraw(string currency, decimal amount)
+    public BankOperationResult Withdraw(string currency, decimal amount)
     {
         var account = SpecificCurrencyAccounts.FirstOrDefault(a => a.Currency == currency);
         
         if(account == null)
-            return BankResult.UnsupportedCurrency;
+            return BankOperationResult.UnsupportedCurrency;
         
-        if(!CardDetails.IsValid)
-            return BankResult.CardExpired;
+        if(!CardDetails.IsValid())
+            return BankOperationResult.CardExpired;
 
-        return account.TryWithdraw(amount) ? BankResult.Success : BankResult.NotEnoughMoney;
+        return account.TryWithdraw(amount) ? BankOperationResult.Success : BankOperationResult.NotEnoughMoney;
     }
 }

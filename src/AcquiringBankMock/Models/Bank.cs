@@ -10,9 +10,9 @@ public class Bank
         _accounts = accounts;
     }
 
-    public BankResult MakePayment(CardDetails cardDetails, string currency, decimal amount)
+    public BankOperationResult MakePayment(CardDetails cardDetails, string currency, decimal amount)
     {
         var account = _accounts.FirstOrDefault(a => a.CardDetails == cardDetails);
-        return account == null ? BankResult.InvalidCredentials : account.Withdraw(currency, amount);
+        return account == null ? BankOperationResult.InvalidCredentials : account.Withdraw(currency, amount);
     }
 }

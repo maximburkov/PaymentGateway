@@ -4,11 +4,14 @@ using MediatR;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using PaymentGateway;
 using PaymentGateway.Core;
 using PaymentGateway.Dto;
+using PaymentGateway.Endpoints;
 using PaymentGateway.Infrastructure.Integration;
 using PaymentGateway.Infrastructure.Persistence;
+using Swashbuckle.AspNetCore.SwaggerGen;
 using IPublisher = PaymentGateway.IPublisher;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,8 +26,6 @@ builder.Services.AddHttpClient<IAcquiringBankService, AcquiringBankMockService>(
         new Uri(Environment.GetEnvironmentVariable("BANK_API_URL") ?? throw new ArgumentNullException(""));
 });
 
-var s = builder.Configuration.GetConnectionString("DefaultConnection");
-
 builder.Services.AddSingleton<IPublisher, BackgroundPublisher>();
 builder.Services.AddSingleton<IPaymentProcessor, PaymentProcessor>();
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
@@ -32,6 +33,43 @@ builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// TODO: move to extension
+var contact = new OpenApiContact()
+{
+    Name = "FirstName LastName",
+    Email = "user@example.com",
+    Url = new Uri("http://www.example.com")
+};
+
+var license = new OpenApiLicense()
+{
+    Name = "My License",
+    Url = new Uri("http://www.example.com")
+};
+
+var info = new OpenApiInfo()
+{
+    Version = "v1",
+    Title = "Swagger Demo Minimal API",
+    Description = "Swagger Demo Minimal API Description",
+    TermsOfService = new Uri("http://www.example.com"),
+    Contact = contact,
+    License = license
+};
+
+builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddSwaggerGen(o =>
+{
+    o.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Version = "v1"
+    });
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    o.IncludeXmlComments(xmlPath);
+});
 
 var app = builder.Build();
 
@@ -42,38 +80,11 @@ app.UseExceptionHandler(exceptionHandlerApp =>
         context.Response.StatusCode = StatusCodes.Status500InternalServerError;
         var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
         await context.Response.WriteAsync("An exception was thrown.");
+        // TODO: logs
     });
 });
 
-app.MapGet("/payment", async ([FromServices]ApplicationDbContext context) =>
-{
-    var payments = await context.Payments
-        .AsNoTracking()
-        .ToListAsync();
-    
-    return Results.Ok(payments);
-});
-
-app.MapPost("/payment", async (PaymentRequest paymentRequest,
-    [FromServices]ApplicationDbContext context,
-    [FromServices]IPublisher publisher,
-    IValidator<PaymentRequest> validator) =>
-{
-    var validationResult = validator.Validate(paymentRequest);
-    if (!validationResult.IsValid)
-    {
-        return Results.BadRequest(validationResult.Errors);
-    }
-    
-    var payment = paymentRequest.AsPayment();
-    payment.Status = Status.Pending;
-    context.Payments.Add(payment);
-    await context.SaveChangesAsync();
-    
-    await publisher.Send(payment);
-    
-    return Results.Accepted($"/payment/{payment.Id}", payment);
-});
+app.UsePaymentEndpoints();
 
 app.UseSwagger();
 app.UseSwaggerUI();

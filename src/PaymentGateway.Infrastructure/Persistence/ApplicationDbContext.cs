@@ -9,6 +9,16 @@ public class ApplicationDbContext : DbContext
         : base(options)
     {
     }
+    
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Payment>()
+            .Ignore(p => p.Cvv)
+            .Ignore(p => p.ExpMonth)
+            .Ignore(p => p.ExpYear);
+
+        base.OnModelCreating(modelBuilder);
+    }
 
     public DbSet<Payment> Payments => Set<Payment>();
 }

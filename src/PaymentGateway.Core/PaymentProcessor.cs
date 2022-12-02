@@ -9,14 +9,10 @@ public class PaymentProcessor :  IPaymentProcessor
         _bankService = bankService;
     }
     
-    // TODO: not bool
     public async Task<bool> Process(Payment payment)
     {
         var result = await _bankService.MakePayment(payment);
-
-        if (result)
-            payment.Status = Status.Verified;
-        
-        return result;
+        payment.Status = result.isSuccesseful ? Status.Succeeded : Status.Failed;
+        return result.isSuccesseful;
     }
 }
